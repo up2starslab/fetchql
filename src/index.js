@@ -30,7 +30,7 @@ class FetchInterceptor {
 
   /**
    * remove interceptors by indexes
-   * @param {number[]} indexes 
+   * @param {number[]} indexes
    */
   removeInterceptors(indexes) {
     if (Array.isArray(indexes)) {
@@ -68,7 +68,7 @@ class FetchInterceptor {
       }
     });
 
-    promise = promise.then(() => fetch(...args));
+    promise = promise.then(newArgs => fetch(...newArgs));
 
     this.reversedInterceptors.forEach(({ response, responseError }) => {
       if (response || responseError) {
@@ -185,7 +185,7 @@ class FetchQL extends FetchInterceptor {
           this.onEnd();
 
           // if data in response is 'null'
-          if (!data) {
+          if (data === null) {
             return reject(errors || [{}]);
           }
           // if all properties of data is 'null'
@@ -253,7 +253,7 @@ class FetchQL extends FetchInterceptor {
       query {
         ${EnumTypeQuery.join('\n')}
       }
-      
+
       fragment EnumFragment on __Type {
         kind
         description
